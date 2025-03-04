@@ -1,5 +1,5 @@
 use crate::*;
-
+use libc::open;
 
 #[repr(C)]
 pub struct PortSettings {
