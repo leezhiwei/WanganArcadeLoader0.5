@@ -347,6 +347,8 @@ unsafe extern "C" fn get_address(clnet: *mut *mut c_int) -> c_int {
 			std::net::IpAddr::V4(addr) => addr,
 			_ => unreachable!(),
 		};
+                let local_subnet = std::net::Ipv4Addr::from_str("255.255.255.0").unwrap();
+                let subnetmask = i32::from_be_bytes(local_subnet.octets());
 		let ip = i32::from_be_bytes(local_ip.octets());
 		let net = clnet.byte_offset(0x24).read();
 		let net = if net.is_null() {
@@ -356,6 +358,7 @@ unsafe extern "C" fn get_address(clnet: *mut *mut c_int) -> c_int {
 		};
 		net.byte_offset(0x04).write(ip);
 		net.byte_offset(0x04).write(ip);
+                net.byte_offset(0x08).write(subnetmask);
 		ip
 	}
 }
