@@ -330,6 +330,8 @@ unsafe extern "C" fn get_address(clnet: *mut *mut c_int) -> c_int {
 	if let Some(local_ip) = &CONFIG.local_ip {
 		let local_ip = std::net::Ipv4Addr::from_str(local_ip).unwrap();
 		let ip = i32::from_be_bytes(local_ip.octets());
+                let local_subnet = std::net::Ipv4Addr::from_str("255.255.255.0").unwrap();
+                let subnetmask = i32::from_be_bytes(local_subnet.octets());
 		let net = clnet.byte_offset(0x24).read();
 		let net = if net.is_null() {
 			clnet.byte_offset(0x1C).read()
