@@ -339,6 +339,7 @@ unsafe extern "C" fn get_address(clnet: *mut *mut c_int) -> c_int {
 			net
 		};
 		net.byte_offset(0x04).write(ip);
+                net.byte_offset(0x08).write(subnetmask);
 		ip
 	} else {
 		let local_ip = local_ip_address::local_ip().unwrap();
